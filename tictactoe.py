@@ -15,13 +15,30 @@ WINNER_FONT = pygame.font.SysFont('comicsans', 200)
 BOARD = pygame.transform.scale(pygame.image.load(
     os.path.join('Assets', 'board.png')), (WIDTH, HEIGHT))
 XS = pygame.transform.scale(pygame.image.load(
-    os.path.join('Assets', 'clipartX.png')), (WIDTH//3, HEIGHT//3))
+    os.path.join('Assets', 'clipartX.png')), (WIDTH//4, HEIGHT//4))
 OHS = pygame.transform.scale(pygame.image.load(
-    os.path.join('Assets', 'clitartO.png')), (WIDTH//3, HEIGHT//3))
+    os.path.join('Assets', 'clipartO.png')), (WIDTH//4, HEIGHT//4))
 
 
 
-FPS = 20
+FPS = 10
+
+
+def draw_xando(board):
+    x = 0
+    y = 0
+    for space in board:
+        if (x == 3):
+            x = 0
+            y += 1
+        if (space != 0):
+            if (space == 'X'):
+                WIN.blit(XS, ((x * 300)+40, (y * 300) + 40))
+            else:
+                WIN.blit(OHS, ((x * 300)+40, (y * 300) + 40))
+        x += 1
+        
+
 
 
 def draw_board(board):
@@ -42,16 +59,21 @@ def draw_winner(winner_text):
     pygame.time.delay(5000)
 
 def main():
-    board = {0,0,0,0,0,0,0,0,0}
+    board = [0, 0, 0, 0, 0, 0, 0, 0, 0]
     clock = pygame.time.Clock()
     run = True
     win = 0
+    turn = 1
     while run:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
                 pygame.quit()
-        
+
+            if event.type == pygame.MOUSEBUTTONUP:
+                pos = pygame.mouse.get_pos()
+                place_x_o(pos, turn)
+
         clock.tick(FPS)
         draw_board(board)
         win = check_win(board)
