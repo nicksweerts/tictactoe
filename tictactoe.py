@@ -43,7 +43,6 @@ def draw_xando(board):
 
 
 def draw_board(board):
-    WIN.fill(WHITE)
     WIN.blit(BOARD, (0,0))
     draw_xando(board)
     pygame.display.update()
